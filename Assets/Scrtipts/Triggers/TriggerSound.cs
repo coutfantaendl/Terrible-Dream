@@ -1,14 +1,18 @@
 using System;
-using System.Collections;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class TriggerSound : MonoBehaviour, ITriggerSound
 {
-    [SerializeField] private AudioClip _triggerSound;
+    [SerializeField] private AudioClip[] _triggerSounds;
     [SerializeField] private AudioSource _audioSource;
 
     private bool _hasSoundPlayed = false;
+
+    private void Awake()
+    {
+        if (_audioSource == null || _triggerSounds == null || _triggerSounds.Length == 0)
+            throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Name cannot be null");
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,20 +23,30 @@ public class TriggerSound : MonoBehaviour, ITriggerSound
     }
 
     public void PlaySound()
-    {
-        if (_audioSource == null || _triggerSound == null)
-            throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Name cannot be null");
-
-        _audioSource.PlayOneShot(_triggerSound);
+    {       
         _hasSoundPlayed = true;
-        StartCoroutine(DestroyAfterSound());
+
+        foreach (var clip in _triggerSounds)
+        {
+            _audioSource.PlayOneShot(clip);
+        }
+
+        float maxClipLenght = GetMaxClipLength();
+        Destroy(gameObject, maxClipLenght);
     }
 
-    private IEnumerator DestroyAfterSound()
+    private float GetMaxClipLength()
     {
-        yield return new WaitForSeconds(_triggerSound.length);
+        float maxLength = 0f;
 
-        Destroy(gameObject);
+        foreach (var clip in _triggerSounds)
+        {
+            if(clip != null && clip.length > maxLength)
+            {
+                maxLength = clip.length;
+            }
+        }
+
+        return maxLength;
     }
-
 }

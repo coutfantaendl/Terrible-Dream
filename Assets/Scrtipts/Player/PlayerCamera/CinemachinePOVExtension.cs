@@ -1,5 +1,6 @@
 using UnityEngine;
 using Cinemachine;
+using System;
 
 public class CinemachinePOVExtension : CinemachineExtension
 {
@@ -20,17 +21,20 @@ public class CinemachinePOVExtension : CinemachineExtension
         base.Awake();
 
         if (_inputManager == null)
-            _inputManager = FindObjectOfType<InputManager>();
+        {
+            throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "InputManager not Initialized, call the Initialize method.");
+        }
 
+        _startingRotation = transform.localRotation.eulerAngles;
     }
 
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
         if (vcam.Follow && stage == CinemachineCore.Stage.Aim)
-        {
-            if (_startingRotation == null)
+        {          
+            if(_inputManager == null)
             {
-                _startingRotation = transform.localRotation.eulerAngles;
+                throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "InputManager not Initialized, the input cannot be processed.");
             }
 
             Vector2 deltaInput = _inputManager.GetMouseDelta();
