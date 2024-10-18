@@ -10,11 +10,20 @@ public class CinemachinePOVExtension : CinemachineExtension
     private InputManager _inputManager;
     private Vector3 _startingRotation;
 
+    public void Initialize(InputManager inputManager)
+    {
+        _inputManager = inputManager;
+    }
+
     protected override void Awake()
     {
-        _inputManager = InputManager.Instance;
         base.Awake();
+
+        if (_inputManager == null)
+            _inputManager = FindObjectOfType<InputManager>();
+
     }
+
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
         if (vcam.Follow && stage == CinemachineCore.Stage.Aim)

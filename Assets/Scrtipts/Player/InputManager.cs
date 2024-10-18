@@ -1,21 +1,19 @@
+using Scripts.Player;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    private static InputManager _instance;
-
-    public static InputManager Instance { get { return _instance; } }
-
     private PlayerInputActions _playerInputActions;
+    private PlayerController _playerController;
+    private CinemachinePOVExtension _extension;
 
     private void Awake()
     {
-        if (_instance != null && _instance != this)
-            Destroy(this.gameObject);
-        else
-            _instance = this;
-
         _playerInputActions = new PlayerInputActions();
+
+        FindObjectOfType<PlayerController>().Initialize(this);
+        FindObjectOfType<CinemachinePOVExtension>().Initialize(this);
+
         Cursor.lockState = CursorLockMode.Locked;
     }
 

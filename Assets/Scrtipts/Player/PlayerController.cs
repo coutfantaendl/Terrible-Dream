@@ -18,17 +18,21 @@ namespace Scripts.Player
 
         private bool _isMoving;
 
-        private void Awake()
+        public void Initialize(InputManager inputManager)
         {
             _characterController = GetComponent<CharacterController>();
             _playerView = GetComponent<PlayerView>();
 
             _cameraTransform = Camera.main.transform;
-            _inputManager = InputManager.Instance;
+
+            _inputManager = inputManager;
+
+            if (_inputManager == null)
+                _inputManager = FindObjectOfType<InputManager>();
         }
 
         private void Update()
-        {            
+        {
             Move();
             HandleWslkingSound();
         }
@@ -51,7 +55,7 @@ namespace Scripts.Player
 
         private void HandleWslkingSound()
         {
-            if(_isMoving )
+            if (_isMoving)
             {
                 _playerView.PlayWalkingSound();
             }
