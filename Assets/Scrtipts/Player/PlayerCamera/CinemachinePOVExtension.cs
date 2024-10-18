@@ -31,8 +31,8 @@ public class CinemachinePOVExtension : CinemachineExtension
     protected override void PostPipelineStageCallback(CinemachineVirtualCameraBase vcam, CinemachineCore.Stage stage, ref CameraState state, float deltaTime)
     {
         if (vcam.Follow && stage == CinemachineCore.Stage.Aim)
-        {          
-            if(_inputManager == null)
+        {
+            if (_inputManager == null)
             {
                 throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "InputManager not Initialized, the input cannot be processed.");
             }

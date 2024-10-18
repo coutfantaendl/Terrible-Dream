@@ -1,47 +1,50 @@
 using System;
 using UnityEngine;
 
-public class TriggerAnimation : MonoBehaviour, ITriggerAnimation
+namespace Scripts.Triggers
 {
-    [SerializeField] private Animator _animator;
-    [SerializeField] private string[] _triggerNames;
-
-    private int[] _triggerHashes;
-    private bool _hasAnimationPlayer = false;
-
-    private void Awake()
+    public class TriggerAnimation : MonoBehaviour, ITriggerAnimation
     {
-        if (_triggerNames == null || _triggerNames.Length == 0)
-            throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Names cannot be null or empty");
-        if (_animator == null)
-            throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Animator cannot be null");
+        [SerializeField] private Animator _animator;
+        [SerializeField] private string[] _triggerNames;
 
-        _triggerHashes = new int[_triggerNames.Length];
+        private int[] _triggerHashes;
+        private bool _hasAnimationPlayer = false;
 
-        for (int i = 0; i < _triggerNames.Length; i++)
+        private void Awake()
         {
-            if (string.IsNullOrEmpty(_triggerNames[i]))
-                throw new ArgumentNullException(paramName: nameof(_triggerNames), message: $"Trigger name at index {i} cannot be null or empty");
+            if (_triggerNames == null || _triggerNames.Length == 0)
+                throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Names cannot be null or empty");
+            if (_animator == null)
+                throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Animator cannot be null");
 
-            _triggerHashes[i] = Animator.StringToHash(_triggerNames[i]);
-        }
-    }
+            _triggerHashes = new int[_triggerNames.Length];
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") && !_hasAnimationPlayer)
-        {
-            PlayAnimation();
-        }
-    }
+            for (int i = 0; i < _triggerNames.Length; i++)
+            {
+                if (string.IsNullOrEmpty(_triggerNames[i]))
+                    throw new ArgumentNullException(paramName: nameof(_triggerNames), message: $"Trigger name at index {i} cannot be null or empty");
 
-    public void PlayAnimation()
-    {
-        foreach (var triggerHash in _triggerNames)
-        {
-            _animator.SetTrigger(triggerHash);
+                _triggerHashes[i] = Animator.StringToHash(_triggerNames[i]);
+            }
         }
 
-        _hasAnimationPlayer = true;
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Player") && !_hasAnimationPlayer)
+            {
+                PlayAnimation();
+            }
+        }
+
+        public void PlayAnimation()
+        {
+            foreach (var triggerHash in _triggerNames)
+            {
+                _animator.SetTrigger(triggerHash);
+            }
+
+            _hasAnimationPlayer = true;
+        }
     }
 }

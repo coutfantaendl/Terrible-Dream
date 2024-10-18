@@ -1,52 +1,55 @@
 using System;
 using UnityEngine;
 
-public class TriggerSound : MonoBehaviour, ITriggerSound
+namespace Scripts.Triggers
 {
-    [SerializeField] private AudioClip[] _triggerSounds;
-    [SerializeField] private AudioSource _audioSource;
-
-    private bool _hasSoundPlayed = false;
-
-    private void Awake()
+    public class TriggerSound : MonoBehaviour, ITriggerSound
     {
-        if (_audioSource == null || _triggerSounds == null || _triggerSounds.Length == 0)
-            throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Name cannot be null");
-    }
+        [SerializeField] private AudioClip[] _triggerSounds;
+        [SerializeField] private AudioSource _audioSource;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") && !_hasSoundPlayed)
+        private bool _hasSoundPlayed = false;
+
+        private void Awake()
         {
-            PlaySound();
-        }
-    }
-
-    public void PlaySound()
-    {       
-        _hasSoundPlayed = true;
-
-        foreach (var clip in _triggerSounds)
-        {
-            _audioSource.PlayOneShot(clip);
+            if (_audioSource == null || _triggerSounds == null || _triggerSounds.Length == 0)
+                throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "Name cannot be null");
         }
 
-        float maxClipLenght = GetMaxClipLength();
-        Destroy(gameObject, maxClipLenght);
-    }
-
-    private float GetMaxClipLength()
-    {
-        float maxLength = 0f;
-
-        foreach (var clip in _triggerSounds)
+        private void OnTriggerEnter(Collider other)
         {
-            if(clip != null && clip.length > maxLength)
+            if (other.CompareTag("Player") && !_hasSoundPlayed)
             {
-                maxLength = clip.length;
+                PlaySound();
             }
         }
 
-        return maxLength;
+        public void PlaySound()
+        {
+            _hasSoundPlayed = true;
+
+            foreach (var clip in _triggerSounds)
+            {
+                _audioSource.PlayOneShot(clip);
+            }
+
+            float maxClipLenght = GetMaxClipLength();
+            Destroy(gameObject, maxClipLenght);
+        }
+
+        private float GetMaxClipLength()
+        {
+            float maxLength = 0f;
+
+            foreach (var clip in _triggerSounds)
+            {
+                if (clip != null && clip.length > maxLength)
+                {
+                    maxLength = clip.length;
+                }
+            }
+
+            return maxLength;
+        }
     }
 }
