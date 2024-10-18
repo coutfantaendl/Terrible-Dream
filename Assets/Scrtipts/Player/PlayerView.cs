@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Scripts.Player.PlayerView
+namespace Scripts.Player
 {
     public class PlayerView : MonoBehaviour
     {
@@ -32,7 +32,6 @@ namespace Scripts.Player.PlayerView
                 _stepTimer = 0f;
                 _isPlaying = false;
             }
-
         }
 
         public void StopWalkingSound()
