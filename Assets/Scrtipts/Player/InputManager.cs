@@ -1,11 +1,10 @@
+using Scripts.Lighting;
 using Scripts.Player;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
     private PlayerInputActions _playerInputActions;
-    private PlayerController _playerController;
-    private CinemachinePOVExtension _extension;
 
     private void Awake()
     {
@@ -13,6 +12,7 @@ public class InputManager : MonoBehaviour
 
         FindObjectOfType<PlayerController>().Initialize(this);
         FindObjectOfType<CinemachinePOVExtension>().Initialize(this);
+        FindObjectOfType<FlashlightController>().Initialize(this);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -35,6 +35,11 @@ public class InputManager : MonoBehaviour
     public Vector2 GetMouseDelta()
     {
         return _playerInputActions.Player.Look.ReadValue<Vector2>();
+    }
+
+    public bool IsFlashlightTogglePressed()
+    {
+        return _playerInputActions.Player.Flashlight.triggered;
     }
 }
 
