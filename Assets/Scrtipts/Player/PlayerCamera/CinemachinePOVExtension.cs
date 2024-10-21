@@ -33,9 +33,7 @@ public class CinemachinePOVExtension : CinemachineExtension
         if (vcam.Follow && stage == CinemachineCore.Stage.Aim)
         {
             if (_inputManager == null)
-            {
-                throw new ArgumentNullException(paramName: nameof(gameObject.name), message: "InputManager not Initialized, the input cannot be processed.");
-            }
+                return;
 
             Vector2 deltaInput = _inputManager.GetMouseDelta();
 

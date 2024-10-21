@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour
         FindObjectOfType<PlayerController>().Initialize(this);
         FindObjectOfType<CinemachinePOVExtension>().Initialize(this);
         FindObjectOfType<FlashlightController>().Initialize(this);
+        FindObjectOfType<PauseManager>().Initialize(this);
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -40,6 +41,11 @@ public class InputManager : MonoBehaviour
     public bool IsFlashlightTogglePressed()
     {
         return _playerInputActions.Player.Flashlight.triggered;
+    }
+
+    public bool Pause()
+    {
+        return _playerInputActions.Player.IsPausePressed.triggered;
     }
 }
 

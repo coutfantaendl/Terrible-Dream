@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 namespace Scripts.Lighting
@@ -7,6 +8,7 @@ namespace Scripts.Lighting
     {
         [Header("FlashLight Settings")]
         [SerializeField] private Light _flashlight;
+        [SerializeField] private TextMeshProUGUI _interactionUI;
 
         private bool _isFlashlightOn = false;
         private InputManager _inputManager;
@@ -32,6 +34,7 @@ namespace Scripts.Lighting
             if(_inputManager != null && _inputManager.IsFlashlightTogglePressed())
             {
                 ToggleFlashlight();
+                _interactionUI.enabled = false;
             }
         }
 

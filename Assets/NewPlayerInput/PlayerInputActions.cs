@@ -62,6 +62,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""IsPausePressed"",
+                    ""type"": ""Button"",
+                    ""id"": ""b43ac791-3c72-4ea9-a69c-be5b5c659138"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -304,6 +313,28 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Flashlight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f47d4eee-9b82-4a81-9e9d-a5eda5db5b57"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""IsPausePressed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dcc7dd9f-197a-4939-8d67-75ecf6e3881c"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""IsPausePressed"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -895,6 +926,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Flashlight = m_Player.FindAction("Flashlight", throwIfNotFound: true);
+        m_Player_IsPausePressed = m_Player.FindAction("IsPausePressed", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -978,6 +1010,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Flashlight;
+    private readonly InputAction m_Player_IsPausePressed;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -986,6 +1019,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Flashlight => m_Wrapper.m_Player_Flashlight;
+        public InputAction @IsPausePressed => m_Wrapper.m_Player_IsPausePressed;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1007,6 +1041,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Flashlight.started += instance.OnFlashlight;
             @Flashlight.performed += instance.OnFlashlight;
             @Flashlight.canceled += instance.OnFlashlight;
+            @IsPausePressed.started += instance.OnIsPausePressed;
+            @IsPausePressed.performed += instance.OnIsPausePressed;
+            @IsPausePressed.canceled += instance.OnIsPausePressed;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -1023,6 +1060,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Flashlight.started -= instance.OnFlashlight;
             @Flashlight.performed -= instance.OnFlashlight;
             @Flashlight.canceled -= instance.OnFlashlight;
+            @IsPausePressed.started -= instance.OnIsPausePressed;
+            @IsPausePressed.performed -= instance.OnIsPausePressed;
+            @IsPausePressed.canceled -= instance.OnIsPausePressed;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1209,6 +1249,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnFlashlight(InputAction.CallbackContext context);
+        void OnIsPausePressed(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
